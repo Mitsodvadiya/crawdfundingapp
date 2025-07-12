@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "./_components/Navbar";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { Spotlight } from "@/global-components/ui/Spotlight";
+import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +30,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased no-scrollbar bg-black/[0.96]`}
       >
-        {children}
+        <ThemeProvider>
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-0 [background-size:40px_40px] select-none",
+              "[background-image:linear-gradient(to_right,#171717_1px,transparent_1px),linear-gradient(to_bottom,#171717_1px,transparent_1px)]",
+            )}
+          />
+          <Spotlight
+            className="-top-20 !left-20 md:-top-20 md:left-60"
+            fill="white"
+          />
+          <Navbar />
+          {children}
+          <Toaster position="top-right" richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

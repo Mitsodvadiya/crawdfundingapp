@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CampaignOwner {
+  id        Int        @id @default(autoincrement())
+  username  String
+  wallet    String
+  isFraud   Boolean    @default(false)
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id          String         @id @default(cuid())
+  name        String
+  description String
+  goalAmount  Float
+  expiresAt   DateTime
+  status      CampaignStatus @default(ACTIVE)
+  ownerId     Int
+  owner       CampaignOwner  @relation(fields: [ownerId], references: [id])
+  donations   Donation[]
+}
+
+model Donation {
+  id         Int           @id @default(autoincrement())
+  campaignId String
+  nickname   String
+  amountUsd  Float
+  state      DonationState @default(VALID)
+  createdAt  DateTime      @default(now())
+  campaign   Campaign      @relation(fields: [campaignId], references: [id])
+}
+
+enum CampaignStatus {
+  ACTIVE
+  EXPIRED
+  SUCCESSFUL
+  FRAUD
+}
+
+enum DonationState {
+  VALID
+  INVALID
+}

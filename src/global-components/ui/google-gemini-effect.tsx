@@ -1,15 +1,12 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { motion, MotionValue } from "motion/react";
+import { motion, MotionValue } from "framer-motion";
+import type { Transition } from "framer-motion";
 import Image from "next/image";
 import React, { use } from "react";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
 
-const transition = {
-    duration: 0,
-    ease: "linear",
-};
 
 export const GoogleGeminiEffect = ({
     pathLengths,
@@ -22,6 +19,10 @@ export const GoogleGeminiEffect = ({
     description?: string;
     className?: string;
 }) => {
+    const transition: Transition = {
+        duration: 0,
+        ease: "linear",
+    };
     const router = useRouter()
     return (
         <div className={cn("sticky top-80", className)}>
